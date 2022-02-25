@@ -5,20 +5,21 @@
 # global properties
 properties() { '
 kernel.string=
-kernel.compiler=
+kernel.revision=5.4
 kernel.made=
+anykernel3.made=osm0sis @ xda-developers
+kernel.compiler=
 message.word=
 do.devicecheck=1
-do.modules=0
+do.modules=1
 do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
 device.name1=
-supported.versions=
+supported.versions=12-14
 supported.patchlevels=
 supported.vendorpatchlevels=
 '; } # end properties
-
 
 ### AnyKernel install
 ## boot files attributes
@@ -27,11 +28,11 @@ set_perm_recursive 0 0 755 644 $RAMDISK/*;
 set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
 } # end attributes
 
-# boot shell variables
-block=;
-is_slot_device=auto;
-ramdisk_compression=auto;
-patch_vbmeta_flag=auto;
+## boot shell variables
+BLOCK=boot;
+IS_SLOT_DEVICE=1;
+RAMDISK_COMPRESSION=auto;
+PATCH_VBMETA_FLAG=auto;
 
 # import functions/variables and setup patching - see for reference (DO NOT REMOVE)
 . tools/ak3-core.sh;
@@ -41,7 +42,6 @@ dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_b
 
 write_boot; # use flash_boot to skip ramdisk repack, e.g. for devices with init_boot ramdisk
 ## end boot install
-
 
 ## init_boot files attributes
 #init_boot_attributes() {
@@ -64,7 +64,6 @@ write_boot; # use flash_boot to skip ramdisk repack, e.g. for devices with init_
 #write_boot;
 ## end init_boot install
 
-
 ## vendor_kernel_boot shell variables
 #BLOCK=vendor_kernel_boot;
 #IS_SLOT_DEVICE=1;
@@ -80,25 +79,27 @@ write_boot; # use flash_boot to skip ramdisk repack, e.g. for devices with init_
 #flash_boot;
 ## end vendor_kernel_boot install
 
-
 ## vendor_boot files attributes
-#vendor_boot_attributes() {
-#set_perm_recursive 0 0 755 644 $RAMDISK/*;
-#set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
-#} # end attributes
+vendor_boot_attributes() {
+set_perm_recursive 0 0 755 644 $RAMDISK/*;
+set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
+}
+# end attributes
 
-# vendor_boot shell variables
-#BLOCK=vendor_boot;
-#IS_SLOT_DEVICE=1;
-#RAMDISK_COMPRESSION=auto;
-#PATCH_VBMETA_FLAG=auto;
+## vendor_boot shell variables
+BLOCK=vendor_boot;
+IS_SLOT_DEVICE=1;
+RAMDISK_COMPRESSION=auto;
+PATCH_VBMETA_FLAG=auto;
 
 # reset for vendor_boot patching
-#reset_ak;
+reset_ak;
 
 # vendor_boot install
 #dump_boot; # use split_boot to skip ramdisk unpack, e.g. for dtb on devices with hdr v4 but no vendor_kernel_boot
+split_boot;
 
 #write_boot; # use flash_boot to skip ramdisk repack, e.g. for dtb on devices with hdr v4 but no vendor_kernel_boot
-## end vendor_boot install
+flash_boot;
 
+# end vendor_boot install

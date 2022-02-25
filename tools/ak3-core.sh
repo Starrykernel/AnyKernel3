@@ -329,9 +329,9 @@ flash_boot() {
         if [ $((magisk_patched & 3)) -eq 1 ]; then
           ui_print " " "! Magisk Detected !";
           ui_print "! Patching started. So, you need not worry about reflashing Magisk !";
-          ui_print "- Patching Kernel..." " ";
-          comp=$($bin/magiskboot decompress kernel 2>&1 | grep -vE 'raw|zimage' | sed -n 's;.*\[\(.*\)\];\1;p');
-          ($bin/magiskboot split $kernel || $bin/magiskboot decompress $kernel kernel) 2>/dev/null;
+          ui_print "- Patching kernel..." " ";
+          comp=$(magiskboot decompress kernel 2>&1 | grep -vE 'raw|zimage' | sed -n 's;.*\[\(.*\)\];\1;p');
+          (magiskboot split $kernel || magiskboot decompress $kernel kernel) 2>/dev/null;
           if [ $? != 0 -a "$comp" ] && $comp --help 2>/dev/null; then
             echo "Attempting kernel unpack with busybox $comp..." >&2;
             $comp -dc $kernel > kernel;
