@@ -42,5 +42,7 @@ reset_ak;
 # vendor_boot install
 split_boot;
 
+check_cmdline;
+
 flash_boot;
 ## end vendor_boot install
