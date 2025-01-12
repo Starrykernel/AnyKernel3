@@ -12,9 +12,8 @@ kernel.compiler=
 message.word=
 do.devicecheck=1
 do.cleanup=1
-device.name1=
-supported.patchlevels=
-supported.vendorpatchlevels=
+device.name1=veux
+device.name2=peux
 '; } # end properties
 
 ### AnyKernel install
