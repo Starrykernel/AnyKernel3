@@ -24,6 +24,11 @@ check_vendor_hals() {
       fdtput $AKHOME/dtb /soc/qcom,mdss_mdp@5e00000/qcom,mdss_dsi_k6s_38_0c_0a_fhdp_dsc_vid qcom,mdss-pan-physical-height-dimension 1546;
       dtb_patched=1;
     fi;
+    if grep -qs -E "board_id=S88006AA1|board_id=S88106BA1" /proc/cmdline && grep -qs pn553 /vendor/etc/libnfc-*.conf; then
+      ui_print " " "Stock NFC config detected.";
+      fdtput $AKHOME/dtb /soc/i2c@4c90000/nq@28 compatible qcom,nq-nci-pn557 -t s;
+      dtb_patched=1;
+    fi;
     if [ -e /vendor/lib64/hw/consumerir.default.so -o -e /vendor/lib64/hw/consumerir.holi.so ]; then
       ui_print " " "Stock IR HAL detected.";
       fdtput $AKHOME/dtb /soc/spi@4c84000/irled@0 compatible ir-spi-xiaomi -t s;
