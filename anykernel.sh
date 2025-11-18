@@ -1,42 +1,42 @@
-# AnyKernel3 Ramdisk Mod Script
-# osm0sis @ xda-developers
+### AnyKernel3 Ramdisk Mod Script
+## osm0sis @ xda-developers
 
-## AnyKernel setup
-# begin properties
+### AnyKernel setup
+# global properties
 properties() { '
-kernel.string=SingkoKernel
+kernel.string=
 do.devicecheck=1
-do.modules=0
-do.systemless=1
-do.cleanup=1
-do.cleanuponabort=0
-device.name1=moonstone 
+device.name1=moonstone
 device.name2=sunstone
 device.name3=stone
-device.name4=
-device.name5=
-supported.versions=
-supported.patchlevels=
+do.cleanup=1
 '; } # end properties
 
-# shell variables
-block=/dev/block/by-name/boot;
-is_slot_device=1;
-ramdisk_compression=auto;
+### AnyKernel install
+# boot shell variables
+block=boot;
+is_slot_device=auto;
+no_block_display=1;
 
-
-## AnyKernel methods (DO NOT CHANGE)
-# import patching functions/variables - see for reference
+# import functions/variables and setup patching - see for reference (DO NOT REMOVE)
 . tools/ak3-core.sh;
 
+# boot install
+split_boot;
+flash_boot;
+## end boot install
 
-## AnyKernel file attributes
-# set permissions/ownership for included ramdisk files
-set_perm_recursive 0 0 755 644 $ramdisk/*;
-set_perm_recursive 0 0 750 750 $ramdisk/init* $ramdisk/sbin;
-
-
-## AnyKernel install
-dump_boot;
-write_boot;
-## end install
+# dtb install
+# auto check the dtb & dtbo file so
+# we don't need another check
+if [ -f dtbo ]; then
+  flash_dtbo
+elif [ -f dtb ]; then
+  block=vendor_boot;
+  reset_ak;
+  split_boot;
+  flash_boot;
+else
+  ui_print " " "No dtb or dtbo file found. Skipping."
+fi
+## end dtb install
