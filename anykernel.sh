@@ -23,21 +23,26 @@ no_block_display=1;
 . tools/ak3-core.sh;
 
 # boot install
+ui_print " " "Flashing Kernel...";
 split_boot;
 flash_boot;
+ui_print " " "OK";
 ## end boot install
 
 # dtb install
 # auto check the dtb & dtbo file so
 # we don't need another check
 if [ -f dtbo ]; then
-  flash_dtbo
-elif [ -f dtb ]; then
+  ui_print " " "Flashing DTBO...";
+  flash_dtbo;
+  ui_print " " "OK";
+fi
+if [ -f dtb ]; then
+  ui_print " " "Flashing DTB...";
   block=vendor_boot;
   reset_ak;
   split_boot;
   flash_boot;
-else
-  ui_print " " "No dtb or dtbo file found. Skipping."
+  ui_print " " "OK";
 fi
 ## end dtb install
