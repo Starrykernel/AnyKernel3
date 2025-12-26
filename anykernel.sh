@@ -4,12 +4,13 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=Protium Kernel by Vedraj Gawas
+kernel.string=Starry Kernel by Amrito/Taki
 do.devicecheck=1
 device.name1=stone
 device.name2=moonstone
 device.name3=sunstone
 device.name4=gemstone
+device.name4=miholi
 do.cleanup=1
 '; } # end properties
 
