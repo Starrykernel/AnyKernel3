@@ -45,3 +45,69 @@ check_vendor_hals() {
 erase_dtbo() {
   dd if=/dev/zero of=/dev/block/by-name/dtbo$SLOT conv=fsync count=1 bs=$(blockdev --getsize64 /dev/block/by-name/dtbo$SLOT);
 }
+
+check_starry_block() {
+
+  ui_print "Running Starry compatibility checks..."
+
+    ui_print "-------------------------------------"
+    ui_print " Device Info:"
+    ui_print "-------------------------------------"
+    ui_print " Android  : $ANDROID_VER"
+    ui_print " Build ID : $ROM_DISPLAY"
+    ui_print " Vendor   : $VENDOR_FP"
+    ui_print " Kernel   : $(uname -r)"
+    ui_print "-------------------------------------"
+
+  # FORCE bypass
+  if [ -f "$AKHOME/FORCE" ]; then
+    ui_print "Force install enabled"
+    return 0
+  fi
+
+  # Grab ALL props once
+  ALL_PROPS="$(getprop)"
+
+  # Case-insensitive match for blocked patterns
+  echo "$ALL_PROPS" | grep -qiE "frost|tranquila|topia|𝙩𝙧𝙖𝙣𝙌𝙪𝙞𝙡𝙖|Frost"
+  IS_BLOCKED=$?
+
+  if [ "$IS_BLOCKED" -eq 0 ]; then
+
+    # Still print useful subset (don’t dump everything)
+    ROM_DISPLAY="$(getprop ro.build.display.id)"
+    ANDROID_VER="$(getprop ro.build.version.release)"
+    VENDOR_FP="$(getprop ro.vendor.build.fingerprint)"
+
+    ui_print "====================================="
+    ui_print "  Starry Kernel Compatibility Check"
+    ui_print "====================================="
+
+    ui_print " Status  : FAILED"
+    ui_print " Reason  : Unsupported ROM"
+    ui_print ""
+
+    ui_print "-------------------------------------"
+    ui_print " Device Info:"
+    ui_print "-------------------------------------"
+    ui_print " Android  : $ANDROID_VER"
+    ui_print " Build ID : $ROM_DISPLAY"
+    ui_print " Vendor   : $VENDOR_FP"
+    ui_print " Kernel   : $(uname -r)"
+    ui_print "-------------------------------------"
+
+    ui_print ""
+    ui_print " Known issues:"
+    ui_print " - Audio may not work"
+    ui_print " - vendor_boot mismatch"
+    ui_print ""
+
+    ui_print " To force install:"
+    ui_print " - Add file named 'FORCE' inside zip"
+    ui_print " - Reflash the kernel"
+    ui_print ""
+
+    sleep 5
+    abort "Installation aborted due to incompatibility."
+  fi
+}

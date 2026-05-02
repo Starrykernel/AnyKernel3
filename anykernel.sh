@@ -26,6 +26,10 @@ NO_BLOCK_DISPLAY=1;
 . tools/ak3-core.sh;
 . tools/ak3-custom.sh;
 
+# perform checks
+check_starry_block;
+## end performed checks
+
 # boot install
 dump_boot;
 
