@@ -4,12 +4,12 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=
+kernel.string=Starry
 kernel.revision=5.4
-kernel.made=
+kernel.made= Taki @ Starrykernel
 anykernel3.made=osm0sis @ xda-developers
-kernel.compiler=
-message.word=
+kernel.compiler=ZyC clang 23.0.0
+message.word=Thank you for installing Starry Kernel
 do.devicecheck=1
 do.cleanup=1
 device.name1=veux
